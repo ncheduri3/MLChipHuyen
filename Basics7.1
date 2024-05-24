@@ -1,0 +1,98 @@
+1. Explain supervised, unsupervised, weakly supervised, semi-supervised, and active learning
+
+Usupervised : Non labelled data. Identify patterns, data distribution. Clustering, dimensionality reduction.
+
+
+Weakly Supervised : Use heuristics / programs to get to label the input data and produce supervision where strong supervision is humans sitting down and labelling the data. Generating data for data hungry models to avoid overfitting is
+not possible by manual labelling. Weak supervision offers time to value, can generate more data in less time. Trade off - predicted labels might have low accuracy precision and recall 
+
+Semi supervised learning : combination of supervised and unsupervised (usses labelled + non labelled data). Use the labelled data to train the model. Use this model to predict the outputs for unlabelled data and use these predictios as labels
+(pseudo labelling) and now train the model on the entire dataset. 
+2 types - transductive, inductive
+Inductive - self training (pseudo labelling)
+Transductive 
+
+
+Active Learning : start with a small curated labelled data and train your model with it. We don't have to wait for the entire dataset to be labelled. 
+Use acquisition functions to select which unseen data should be labelled next and quantitfy the value of labelling more unseen data and accuracy of the labels generated. 
+Predictions with low confidence will request more data of this type to be labelled and predictions with high confidence will not need more data.
+It uses humans. It requires humans to annotate data and gives quality of the labels. 
+How do you find bad data to annotate and add to current labelled dataset the model is being trained on ? -> Use query strategies. 
+Query by Committee : Different committee models are trained on different subsets of labelled data. Each have diffferent perspective and will label the unlabelled data differently.
+The data on which the models most disagree on, we pick it to label by humans (or by some automatic process).
+
+
+
+2. Empirical risk minimization.
+  Learning Paradigm in ML
+
+  ML models learns hypothesis h which is a mapping from x to y. Due to compute constraints we limit h to be linear functions and the set of functions can be called hypothesis space.
+  h(x) = wx + b
+  Prediction error L = h(x) - y  [Loss Function L]
+
+  
+  
+  Law of large numbers - empirical mean of m i.i.d Random variables converges to their expectation as the sample size m grows to infinity.
+  Example - Given 100 people. We sample one person and ask how much money you have in your wallet. Now we sample 2nd person and keep calculating the average of the amount. Now the more people we sample upon, the more close our "emperical" mean will be to the actual mean of the entire 100 people
+
+[E] What’s the risk in empirical risk minimization?
+We want a hypothesis that has lowest risk over any data point.
+Risk ? Risk = E(Loss(h(x), y)) over the probability distribution p(x, y)
+We want to find h that gives the min risk. 
+
+[E] Why is it empirical?
+Because we sample the data points to estimate the expectation of loss. We compute emperical mean of loss over data points and we do this to estimate the expectation of loss over the data points.
+
+
+[E] How do we minimize that risk?
+Well we don't know the distribution p(x, y) and hence we don't know the dependent distribution L(h(x), y). Hence we cannot calculate the expectation of the loss for given h and the data points. 
+But we can estimate the expectation of the loss by law of lange numbers and say that it is just he mean over the data points. 
+
+Once we have a concrete risk function, we can apply gradient descent / optimization algorithms to reach an optimal h.
+
+
+3. [E] Occam's razor states that when the simple explanation and complex explanation both work equally well, the simple explanation is usually correct. How do we apply this principle in ML?
+We have two goals in ML - Improve the training error; Reduce the gap between training error and test error.
+When training error is huge, the model might have underfit.
+When the gap between training and test error is huge, the model might have overfit to the training data.
+
+Occam's razor - among all the potential/competing hyoptheses in the hypothesis space, select the simpler one.
+
+When the model is complex, it sometimes fails to generalize
+
+4. [M] If we have a wide NN and a deep NN with the same number of parameters, which one is more expressive and why?
+First, in principle, there is no reason you need deep neural nets at all. A sufficiently wide neural network with just a single hidden layer can approximate any (reasonable) function given enough training data. There are, however, a few difficulties with using an extremely wide, shallow network. The main issue is that these very wide, shallow networks are very good at memorization, but not so good at generalization. So, if you train the network with every possible input value, a super wide network could eventually memorize the corresponding output value that you want. But that's not useful because for any practical application you won't have every possible input value to train with.
+
+The advantage of multiple layers is that they can learn features at various levels of abstraction. For example, if you train a deep convolutional neural network to classify images, you will find that the first layer will train itself to recognize very basic things like edges, the next layer will train itself to recognize collections of edges such as shapes, the next layer will train itself to recognize collections of shapes like eyes or noses, and the next layer will learn even higher-order features like faces. Multiple layers are much better at generalizing because they learn all the intermediate features between the raw data and the high-level classification.
+
+So that explains why you might use a deep network rather than a very wide but shallow network. But why not a very deep, very wide network? I think the answer there is that you want your network to be as small as possible to produce good results. As you increase the size of the network, you're really just introducing more parameters that your network needs to learn, and hence increasing the chances of overfitting. If you build a very wide, very deep network, you run the chance of each layer just memorizing what you want the output to be, and you end up with a neural network that fails to generalize to new data.
+
+Aside from the specter of overfitting, the wider your network, the longer it will take to train. Deep networks already can be very computationally expensive to train, so there's a strong incentive to make them wide enough that they work well, but no wider.
+Link : https://stats.stackexchange.com/questions/222883/why-are-neural-networks-becoming-deeper-but-not-wider
+Link (need to checkout by Google AI) : https://www.youtube.com/watch?v=6uPop547u_E
+
+7. [E] What are saddle points and local minima? Which are thought to cause more problems for training large NNs?
+  Link : https://d2l.ai/chapter_optimization/optimization-intro.html
+
+8. Hyperparameters.
+  [E] What are the differences between parameters and hyperparameters?
+    parameters are learnable and hyperparameters are not learnt but are configured 
+  [E] Why is hyperparameter tuning important?
+    Effcienct and fast optimization/convergence. 
+    Using the right set of learning algorithms and regularisation hyperparameters and model configurations we can avoid overfitting
+  [M] Explain algorithm for tuning hyperparameters.
+    Check One Note
+
+9. Classification vs. regression.
+  [E] What makes a classification problem different from a regression problem?
+    Classification has discrete unordered classes that the data needs to be categorized by the mdoel into. 
+    Regression had continuous values as ouputs
+
+    Evaluation metrics for classification - precision, recall, f1, area under ROC curve and measures the performance of labelling the data w.r.t ground truth.
+    Evaluation metrics for regression - MSE, root MSE which calculates the difference between the actual and the predicted values. 
+
+    Classification models - DT, RF, SVMs, Logistic Regression
+    Regression models - Linear regression, polynomial regression, decision tree regression, random forest regression
+    
+  [E] Can a classification problem be turned into a regression problem and vice versa?
+    Link : https://spotintelligence.com/2023/05/02/regression-vs-classification/
