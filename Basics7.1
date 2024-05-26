@@ -96,3 +96,13 @@ Link (need to checkout by Google AI) : https://www.youtube.com/watch?v=6uPop547u
     
   [E] Can a classification problem be turned into a regression problem and vice versa?
     Link : https://spotintelligence.com/2023/05/02/regression-vs-classification/
+
+13. [E] Why does an ML model’s performance degrade in production?
+    Data/Concept Drift / Changes in data over time
+    Data Drift : When the distribution of inputs (x) changes
+    Concept Drift : When the mapping x -> y changes
+
+    If the system is complex and there are multiple models. Change in one model can affect the others. Maybe the ouput of one model is the input of the other and the distribution might     
+    change.
+
+    Maybe the features used in training can no longer be generalized. Model could have overfit in the training. 
